@@ -22,4 +22,19 @@ class BlogController extends Controller
             'posts' => $posts,
         ]);
     }
+
+    /**
+     * @Route("blog/{id}", name="blog_show")
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository(Post::class)->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('The post does not exist');
+        }
+
+        return $this->render('blog/show.html.twig', ['post' => $post]);
+    }
 }
