@@ -45,10 +45,24 @@ class BlogController extends Controller
     public function newAction(Request $request)
     {
         // フォームの組み立て
-        $form = $this->createFormBuilder(new Post())
+        $post = new Post();
+        $form = $this->createFormBuilder($post)
             ->add('title')
             ->add("content")
             ->getForm();
+
+        // PSST判定バリデーション
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            // エンティティを永続化
+            $post->setCreatedAt(new \DateTime());
+            $post->setUpdatedAt(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+
+            return $this->redirectToRoute('blog_index');
+        }
 
         return $this->render('blog/new.html.twig', [
             'form' => $form->createView(),
