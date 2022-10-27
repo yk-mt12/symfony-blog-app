@@ -3,9 +3,9 @@
 {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block page_title '新規作成'%}
+
 {% block content%}
 {{form_start(form)}}
 {{form_widget(form)}}
-<button type="submit" class="btn btn-primary">
-  作成
-</button> {{form_end(form)}} {% endblock content%}
+<button type="submit" class="btn btn-primary">作成</button>
+{{form_end(form)}} {% endblock content%}
