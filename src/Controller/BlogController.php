@@ -25,7 +25,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("blog/{id}", name="blog_show", requirements={"id"="\d+"})
+     * @Route("/{id}", name="blog_show", requirements={"id"="\d+"})
      */
     public function showAction($id)
     {
@@ -33,7 +33,7 @@ class BlogController extends Controller
         $post = $em->getRepository(Post::class)->find($id);
 
         if (!$post) {
-            throw $this->createNotFoundException('No post found for id '.$id);
+            throw $this->createNotFoundException('No post found for id ' . $id);
         }
 
         return $this->render('blog/show.html.twig', ['post' => $post]);
@@ -53,7 +53,7 @@ class BlogController extends Controller
 
         // PSST判定バリデーション
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             // エンティティを永続化
             $post->setCreatedAt(new \DateTime());
             $post->setUpdatedAt(new \DateTime());
@@ -67,5 +67,26 @@ class BlogController extends Controller
         return $this->render('blog/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="blog_delete", requirements={"id"="\d+"})
+     */
+    function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository(Post::class)->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException(
+                "No post found for id " . $id
+            );
+        }
+
+        // 削除
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('blog_index');
     }
 }
