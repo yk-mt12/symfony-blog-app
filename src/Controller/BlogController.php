@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends Controller
 {
     /**
-     * @Route("/blog", name="blog")
+     * @Route("/blog", name="blog_index")
      */
     public function index(): Response
     {
