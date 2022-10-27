@@ -6,6 +6,9 @@
 parameters:
     locale: ja
 
+framework:
+    translator: {fallbacks: ['%locale%']}
+    
 services:
     # default configuration for services in *this* file
     _defaults:
